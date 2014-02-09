@@ -13,6 +13,7 @@
 - name: install sqitch dependencies
   cpanm:
     name: $item
+    notest: True
   with_items:
     - Dist::Zilla
     - Dist::Zilla::Plugin::CheckExtraTests
