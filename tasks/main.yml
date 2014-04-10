@@ -31,6 +31,7 @@
 
 - shell: "which sqitch"
   register: which_sqitch
+  ignore_errors: yes
 
 - get_url:
     url: $sqitch_download_url
