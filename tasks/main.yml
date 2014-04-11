@@ -29,25 +29,19 @@
     recurse: yes
     state: directory
 
-- shell: "which sqitch"
-  register: which_sqitch
-  ignore_errors: yes
+- action: sqitch_facts
 
 - get_url:
     url: $sqitch_download_url
     dest: "/usr/local/perl/sqitch.zip"
-  register: download_sqitch
-  when: which_sqitch.stdout == ''
+  when: "not sqitch.installed or sqitch.version != '{{ sqitch_version }}'"
 
 - stat:
     path: "/usr/local/perl/sqitch-{{ sqitch_version }}"
-  register: sqitch_extract_dir
-  when: which_sqitch.stdout == ''
+  when: "not sqitch.installed or sqitch.version != '{{ sqitch_version }}'"
 
 - shell: "unzip /usr/local/perl/sqitch.zip -d /usr/local/perl"
-  when: sqitch_extract_dir.stat.isdir is undefined or sqitch_extract_dir.stat.isdir == false
-  register: sqitch_unzip
-  when: which_sqitch.stdout == ''
+  when: "not sqitch.installed or sqitch.version != '{{ sqitch_version }}'"
 
 - shell: "cd /usr/local/perl/sqitch-* && dzil install"
-  when: which_sqitch.stdout == '' and sqitch_unzip is defined and sqitch_unzip.changed
+  when: "not sqitch.installed or sqitch.version != '{{ sqitch_version }}'"
