@@ -1,7 +1,7 @@
 ---
 - name: install perl and cpanm
   apt:
-    pkg: $item
+    pkg: "{{item}}"
     state: installed
     update-cache: yes
   with_items:
@@ -12,7 +12,7 @@
 
 - name: install sqitch dependencies
   cpanm:
-    name: $item
+    name: "{{item}}"
     notest: True
   with_items:
     - Dist::Zilla
@@ -32,7 +32,7 @@
 - action: sqitch_facts
 
 - get_url:
-    url: $sqitch_download_url
+    url: "{{sqitch_download_url}}"
     dest: "/usr/local/perl/sqitch.zip"
   when: "not sqitch.installed or sqitch.version != '{{ sqitch_version }}'"
 
